@@ -1,37 +1,52 @@
 <?php
 
-// Path to the front controller (this file)
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
+include('conn.php');
+include('mail.php');
+include('UserMail.php');
 
-/*
- *---------------------------------------------------------------
- * BOOTSTRAP THE APPLICATION
- *---------------------------------------------------------------
- * This process sets up the path constants, loads and registers
- * our autoloader, along with Composer's, loads our constants
- * and fires up an environment-specific bootstrapping.
- */
+$userid = session()->userid;
+$sql = "SELECT `expiration_date` FROM `users` WHERE `id_users` = '".$userid."'";
+$query = mysqli_query($conn, $sql);
+$period = mysqli_fetch_assoc($query);
 
-// Ensure the current directory is pointing to the front controller's directory
-chdir(__DIR__);
+$dateTime = strtotime($period['expiration_date']);
+$getDateTime = date("F d, Y H:i:s", $dateTime);
 
-// Load our paths config file
-// This is the line that might need to be changed, depending on your folder structure.
-$pathsConfig = FCPATH . '../app/Config/Paths.php';
-// ^^^ Change this if you move your application folder
-require realpath($pathsConfig) ?: $pathsConfig;
+?>
 
-$paths = new Config\Paths();
+<?= $this->extend('Layout/Starter') ?>
+<?= $this->section('content') ?>
 
-// Location of the framework bootstrap file.
-$bootstrap = rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
-$app       = require realpath($bootstrap) ?: $bootstrap;
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/connect">Connect</a></li>
+    </ul>
+</nav>
 
-/*
- *---------------------------------------------------------------
- * LAUNCH THE APPLICATION
- *---------------------------------------------------------------
- * Now that everything is setup, it's time to actually fire
- * up the engines and make this app do its thang.
- */
-$app->run();
+<div class="container">
+    <?= $this->include('Layout/msgStatus') ?>
+    <h1>Welcome to the Dashboard</h1>
+    <p>Your account expires on: <strong id="exp"></strong></p>
+</div>
+
+<script>
+    var countDownTimer = new Date("<?php echo "$getDateTime"; ?>").getTime();
+    var interval = setInterval(function() {
+        var current = new Date().getTime();
+        var diff = countDownTimer - current;
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById("exp").innerHTML = days + " Day : " + hours + "h " + minutes + "m " + seconds + "s ";
+        if (diff < 0) {
+            clearInterval(interval);
+            document.getElementById("exp").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+</script>
+
+<?= $this->endSection() ?>
