@@ -3,58 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/connect">Connect</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav>
+        <ul>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/connect">Connect</a></li>
+        </ul>
+    </nav>
     
-    <main>
-        <h1>Welcome to the Dashboard</h1>
-        <p>Your account details and statistics will appear here.</p>
-        
-        <section id="account-info">
-            <h2>Account Expiration</h2>
-            <p id="exp">Loading...</p>
-        </section>
-        
-        <section id="statistics">
-            <h2>Statistics</h2>
-            <p>Total Balance: ₹<span id="balance">0</span></p>
-            <p>Total Keys: <span id="total-keys">0</span></p>
-            <p>Total Users: <span id="total-users">0</span></p>
-        </section>
-    </main>
+    <section id="login">
+        <h2>Login</h2>
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
     
-    <footer>
-        <p>&copy; 2025 Dashboard</p>
-    </footer>
+    <section id="register">
+        <h2>Register</h2>
+        <form action="/register" method="POST">
+            <label for="new-username">Username:</label>
+            <input type="text" id="new-username" name="new-username" required>
+            <label for="new-password">Password:</label>
+            <input type="password" id="new-password" name="new-password" required>
+            <button type="submit">Register</button>
+        </form>
+    </section>
     
-    <script>
-        // Countdown Timer
-        var countDownTimer = new Date("2025-12-31T23:59:59").getTime();
-        var interval = setInterval(function() {
-            var current = new Date().getTime();
-            var diff = countDownTimer - current;
-            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById("exp").innerHTML = days + " Days " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (diff < 0) {
-                clearInterval(interval);
-                document.getElementById("exp").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
+    <section id="connect">
+        <h2>Connect</h2>
+        <p>Connection panel will be implemented here.</p>
+    </section>
 </body>
 </html>
