@@ -1,12 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title> Forbidden</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<p>Directory access is forbidden.</p>
-
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/connect">Connect</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h1>Welcome to the Dashboard</h1>
+        <p>Your account details and statistics will appear here.</p>
+        
+        <section id="account-info">
+            <h2>Account Expiration</h2>
+            <p id="exp">Loading...</p>
+        </section>
+        
+        <section id="statistics">
+            <h2>Statistics</h2>
+            <p>Total Balance: ₹<span id="balance">0</span></p>
+            <p>Total Keys: <span id="total-keys">0</span></p>
+            <p>Total Users: <span id="total-users">0</span></p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Dashboard</p>
+    </footer>
+    
+    <script>
+        // Countdown Timer
+        var countDownTimer = new Date("2025-12-31T23:59:59").getTime();
+        var interval = setInterval(function() {
+            var current = new Date().getTime();
+            var diff = countDownTimer - current;
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById("exp").innerHTML = days + " Days " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (diff < 0) {
+                clearInterval(interval);
+                document.getElementById("exp").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
-/
